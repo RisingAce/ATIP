@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Map Website</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        /* Remove margins and make the map fill the page */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #map {
+            flex-grow: 1; /* Allow map to take up the majority of the space */
+            width: 100%;
+            height: 80%; /* Map takes 80% of the height */
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div id="search-container">
+     
+    </div>
+    <div id="map"></div>
+
+    <div id="results-container">
+        <!-- Search results will be displayed here -->
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
+    <script>
+        // Your Mapbox access token
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaGFycnk5MDkyIiwiYSI6ImNsd3M0dDRoMzA4MTUycnM1eXcya2ppZmwifQ.3NgUJBIyjMHynoxkBNmrlw';
+
+        // Initialize the Mapbox map
+        const map = new mapboxgl.Map({
+            container: 'map', // The ID of the div where the map will render
+            style: 'mapbox://styles/harry9092/cm642r09r009f01sf35zgcqzn', // Your custom Mapbox Style URL
+            center: [-3.1883, 55.9533], // Longitude, Latitude (e.g., Edinburgh)
+            zoom: 10 // Adjust zoom level as needed
+        });
+
+        // Add GeoJSON labels if already part of the Mapbox style
+        map.on('load', () => {
+            console.log('Map loaded successfully!');
+
+            // Add a labels layer from the Mapbox style (replace 'your-source-layer-id')
+            map.addLayer({
+                id: 'labels-layer', // Unique ID for the labels layer
+                type: 'symbol', // Symbol layer for text
+                source: 'composite', // 'composite' is used if the source is part of the Mapbox style
+                'source-layer': 'transform-uppercasepointllabels-3ladet', // Replace with the ID of your source layer
+                layout: {
+                    'text-field': ['get', 'Name'], // Use the 'Name' property for labels
+                    'text-size': 14, // Font size
+                    'text-offset': [0, 1.5], // Position the text above the points
+                    'text-anchor': 'top' // Anchor the text at the top
+                },
+                paint: {
+                    'text-color': '#333333' // Set the label text color
+                }
+            });
+        });
+
+    
+    </script>
+</body>
+</html>
